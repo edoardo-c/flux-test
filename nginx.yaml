@@ -1,0 +1,34 @@
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: nginx
+  namespace: default
+  labels:
+    app: nginx
+spec:
+  replicas: 5
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: nginx
+  serviceName: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      enableServiceLinks: false
+      shareProcessNamespace: true
+      containers:
+        - name: nginx
+          image: nginx:1.19.10-alpine
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          ports:
+            - containerPort: 80
+            - containerPort: 443
